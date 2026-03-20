@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">System Tweaks</string>
+    <string name="xposed_description">ColorOS 系统微调</string>
+    <string name="home_subtitle">Selected ColorOS system behavior adjustments</string>
+    <string name="module_status_title">Module status</string>
+    <string name="module_status_activation">Activation</string>
+    <string name="module_status_active">LSPosed active</string>
+    <string name="module_status_inactive">Module inactive</string>
+    <string name="module_status_required_scope">Required scope</string>
+    <string name="module_status_required_scope_empty">No enabled hooks</string>
+    <string name="module_status_api_level">API level</string>
+    <string name="group_notifications_title">Notifications</string>
+    <string name="group_notifications_description">Controls for persistent system notifications and status prompts.</string>
+    <string name="group_system_title">System</string>
+    <string name="group_system_description">Reserved for framework and system behavior adjustments.</string>
+    <string name="tweak_hide_vpn_notification_title">Hide active VPN notification</string>
+    <string name="tweak_hide_vpn_notification_summary">Suppress the persistent VPN notification published by Android System.</string>
+    <string name="tweak_hide_alert_window_notification_title">Hide overlay permission notification</string>
+    <string name="tweak_hide_alert_window_notification_summary">Suppress the Android System alert shown when an app is displayed over others.</string>
+    <string name="tweak_hide_developer_options_notification_title">Hide developer options notification</string>
+    <string name="tweak_hide_developer_options_notification_summary">Suppress the ColorOS developer options notification in SystemUI.</string>
+    <string name="target_android">Android</string>
+    <string name="target_systemui">SystemUI</string>
+    <string name="requires_restart">Requires restart</string>
+</resources>
