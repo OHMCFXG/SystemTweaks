@@ -34,6 +34,7 @@ fun ToggleCard(
     onCheckedChange: (Boolean) -> Unit,
 ) {
     Surface(
+        onClick = { onCheckedChange(!toggle.enabled) },
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(24.dp),
         border = BorderStroke(
@@ -84,7 +85,7 @@ fun ToggleCard(
             }
             Switch(
                 checked = toggle.enabled,
-                onCheckedChange = onCheckedChange,
+                onCheckedChange = null,
             )
         }
     }
