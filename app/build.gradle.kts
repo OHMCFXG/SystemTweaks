@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
@@ -24,7 +26,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -38,6 +41,17 @@ android {
     buildFeatures {
         buildConfig = true
         compose = true
+    }
+    androidResources {
+        localeFilters += listOf("en", "zh-rCN")
+    }
+    packaging {
+        resources {
+            excludes += setOf(
+                "DebugProbesKt.bin",
+                "META-INF/androidx/**/LICENSE.txt",
+            )
+        }
     }
 }
 
