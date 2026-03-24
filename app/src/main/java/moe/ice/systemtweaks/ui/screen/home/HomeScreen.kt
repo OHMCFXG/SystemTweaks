@@ -10,12 +10,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -70,13 +74,29 @@ fun HomeScreen(
                     item {
                         GroupHeader(group = section.group)
                     }
-                    items(section.toggles, key = { it.definition.key }) { toggle ->
-                        ToggleItem(
-                            toggle = toggle,
-                            onCheckedChange = { enabled ->
-                                onToggleChanged(toggle.definition.key, enabled)
-                            },
-                        )
+                    item {
+                        Surface(
+                            shape = RoundedCornerShape(24.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Column {
+                                section.toggles.forEachIndexed { index, toggle ->
+                                    ToggleItem(
+                                        toggle = toggle,
+                                        onCheckedChange = { enabled ->
+                                            onToggleChanged(toggle.definition.key, enabled)
+                                        },
+                                    )
+                                    if (index < section.toggles.lastIndex) {
+                                        HorizontalDivider(
+                                            modifier = Modifier.padding(horizontal = 16.dp),
+                                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                                        )
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
