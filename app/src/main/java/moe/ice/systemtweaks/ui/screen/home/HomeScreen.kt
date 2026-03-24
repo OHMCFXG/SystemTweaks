@@ -71,7 +71,7 @@ fun HomeScreen(
                         GroupHeader(group = section.group)
                     }
                     items(section.toggles, key = { it.definition.key }) { toggle ->
-                        ToggleCard(
+                        ToggleItem(
                             toggle = toggle,
                             onCheckedChange = { enabled ->
                                 onToggleChanged(toggle.definition.key, enabled)
