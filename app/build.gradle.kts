@@ -1,5 +1,32 @@
 @file:Suppress("UnstableApiUsage")
 
+import java.io.File
+import java.util.Properties
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use(::load)
+    }
+}
+
+fun localSigningProperty(name: String): String? {
+    val localValue = localProperties.getProperty(name)?.takeIf(String::isNotBlank)
+    if (localValue != null) return localValue
+    val gradleValue = providers.gradleProperty(name).orNull?.takeIf(String::isNotBlank)
+    if (gradleValue != null) return gradleValue
+    return System.getenv(name.replace('.', '_').uppercase())?.takeIf(String::isNotBlank)
+}
+
+val sharedKeystorePath = localSigningProperty("hcx.keystore.file") ?: "/home/hcx/Codes/Android/hcx.jks"
+val sharedKeystorePassword = localSigningProperty("hcx.keystore.password")
+val sharedKeyAlias = localSigningProperty("hcx.key.alias")
+val sharedKeyPassword = localSigningProperty("hcx.key.password")
+val hasSharedKeystoreSigning = File(sharedKeystorePath).exists() &&
+    !sharedKeystorePassword.isNullOrBlank() &&
+    !sharedKeyAlias.isNullOrBlank() &&
+    !sharedKeyPassword.isNullOrBlank()
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
@@ -14,6 +41,19 @@ android {
         }
     }
 
+    signingConfigs {
+        create("localShared") {
+            if (hasSharedKeystoreSigning) {
+                storeFile = file(sharedKeystorePath)
+                storePassword = sharedKeystorePassword
+                keyAlias = sharedKeyAlias
+                keyPassword = sharedKeyPassword
+            } else {
+                initWith(getByName("debug"))
+            }
+        }
+    }
+
     defaultConfig {
         applicationId = "moe.ice.systemtweaks"
         minSdk = 35
@@ -25,7 +65,20 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("localShared")
+        }
+
+        create("dev") {
+            initWith(getByName("debug"))
+            signingConfig = signingConfigs.getByName("localShared")
+            isDebuggable = true
+            versionNameSuffix = "-dev"
+            matchingFallbacks += listOf("debug")
+        }
+
         release {
+            signingConfig = signingConfigs.getByName("localShared")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
