@@ -8,7 +8,10 @@ import moe.ice.systemtweaks.BuildConfig
 import moe.ice.systemtweaks.hook.feature.FeatureRegistry
 import moe.ice.systemtweaks.hook.util.XposedLog
 
-@InjectYukiHookWithXposed(entryClassName = "systemtweaks")
+@InjectYukiHookWithXposed(
+    entryClassName = "systemtweaks",
+    modulePackageName = "moe.ice.systemtweaks",
+)
 class HookEntry : IYukiHookXposedInit {
     override fun onInit() = configs {
         debugLog {
